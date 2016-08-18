@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="gameApp">
+
+<head>
+  <title>Game</title>
+  <script src="bundle.js"></script>
+  <link rel="stylesheet" href="bundle.css">
+</head>
+<body>
+  <main ng-controller="GameController as gameCtrl" >
+    <h1>asdas</h1>
+
+    <form name="gamePadForm" novalidate >
+      <label for="direction">Direction: </label>
+      <select name="direction" ng-model="gamePadForm.direction">
+        <option ng-repeat="direction in gameCtrl.directions" value="{{direction}}" ng-init="gamePadForm.direction='north'"> {{direction}} </option>
+      </select>
+
+      <button type="button" ng-click="gameCtrl.moveDirection(gamePadForm.direction)">Move</button>
+  </form>
+
+  <ol>
+    <li ng-repeat="item in gameCtrl.history track by item.id"> {{item.text}} </li>
+  </ol>
+
+  </main>
+</body>
+
+</html>

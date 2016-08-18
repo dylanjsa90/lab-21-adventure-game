@@ -1,0 +1,19 @@
+@import "vendor/normalize/normalize";
+@include normalize();
+@import "lib/_theme";
+
+
+html, body {
+  // position type
+  // padding and margins
+  // height width
+  // font stuff
+  // box stuff
+  // color
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: $app-default;
+}

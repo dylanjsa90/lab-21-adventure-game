@@ -12,6 +12,7 @@ function GameController($log) {
   this.player = {
     name: 'simon',
     location: 'roomA',
+    health: 100,
   };
 
   this.map = require('../lib/map.js');
@@ -26,7 +27,8 @@ function GameController($log) {
         this.logHistory('you have entered' + this.player.location);
         return;
       }
-      this.logHistory('you hit the wall');
+      this.player.health -= 5;
+      this.logHistory('you hit a wall and lost 5 health');
     }
   };
 

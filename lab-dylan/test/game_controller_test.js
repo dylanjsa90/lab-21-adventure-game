@@ -11,8 +11,9 @@ describe('testing GameController', function() {
   beforeEach(() => {
     this.gameCtrl.history = [];
     this.gameCtrl.player = {
-      name: 'slug',
+      name: 'testplayer',
       location: 'roomD',
+      health: 100,
     };
   });
 

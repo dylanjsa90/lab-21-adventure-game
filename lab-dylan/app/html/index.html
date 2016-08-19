@@ -8,7 +8,7 @@
 </head>
 <body>
   <main ng-controller="GameController as gameCtrl" >
-    <h1>asdas</h1>
+    <h1>Cave adventure</h1>
 
     <form name="gamePadForm" novalidate >
       <label for="direction">Direction: </label>
@@ -16,7 +16,13 @@
         <option ng-repeat="direction in gameCtrl.directions" value="{{direction}}" ng-init="gamePadForm.direction='north'"> {{direction}} </option>
       </select>
 
-      <button type="button" ng-click="gameCtrl.moveDirection(gamePadForm.direction)">Move</button>
+      <button type="button" ng-click="gameCtrl.moveDirection(gamePadForm.direction)">Explore</button>
+  </form>
+
+  <form name="monsterEncounterForm" novalidate>
+    <label for="attack">Attack: </label>
+    <select name="attack" ng-model="monsterEncounterForm"></select>
+
   </form>
 
   <ol>

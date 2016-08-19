@@ -1,29 +1,35 @@
 'use strict';
 
 module.exports = {
-  roomA: {
-    north: 'wall',
-    east: 'roomB',
-    south: 'roomC',
-    west: 'wall',
+  entrance: {
+    left: 'caveA',
+    straight: 'caveB',
+    right: 'caveC',
+    back: 'outside',
   },
-  roomB: {
-    north: 'wall',
-    east: 'wall',
-    south: 'roomD',
-    west: 'roomA',
+  caveA: {
+    left: 'deadend',
+    straight: 'deadend',
+    right: 'caveB',
+    back: 'entrance',
+    opts: ['chest', 'monster', 'nothing', 'fresh cooked meal'],
+    explored: false,
   },
-  roomC: {
-    north: 'roomA',
-    east: 'roomD',
-    south: 'wall',
-    west: 'wall',
+  caveB: {
+    left: 'caveA',
+    straight: 'deadend',
+    right: 'caveB',
+    back: 'entrance',
+    opts: ['chest', 'monster', 'empty', 'food'],
+    explored: false,
   },
-  roomD: {
-    north: 'roomB',
-    east: 'wall',
-    south: 'wall',
-    west: 'roomC',
+  caveC: {
+    left: 'caveB',
+    straight: 'deadend',
+    right: 'deadend',
+    back: 'entrance',
+    opts: ['chest', 'monster', 'empty', 'food'],
+    explored: false,
   }
 
 };

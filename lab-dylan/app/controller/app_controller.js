@@ -13,9 +13,11 @@ function GameController($log) {
     name: 'Adventurer',
     location: 'entrance',
     health: 100,
-    weapon: ['fists'],
+    options: ['fists', 'flee'],
   };
-
+  this.activeEncounter = false;
+  this.currentEncounter;
+  this.nextMove;
   this.map = require('../lib/map.js');
   this.encounter = require('../lib/encounter.js');
 
@@ -25,26 +27,28 @@ function GameController($log) {
       let randomEncounter;
       let currentLocation = this.map[this.player.location];
       $log.log('currentLocation', currentLocation);
-      let nextMove = currentLocation[direction];
-      if (currentLocation !== 'entrance' && nextMove !== 'deadend' && nextMove !== 'entrance') {
-        nextMove.back = currentLocation;
+      this.nextMove = currentLocation[direction];
+      if (currentLocation !== 'entrance' && this.nextMove !== 'deadend' && this.nextMove !== 'entrance') {
+        this.map[this.nextMove]['back'] = currentLocation;
       }
-      $log.log('nextMove', nextMove);
+      $log.log('nextMove', this.nextMove);
 
-      if (nextMove !== 'deadend') {
-        this.player.location = nextMove;
-        if (nextMove.explored === true) {
+      if (this.nextMove !== 'deadend') {
+        this.player.location = this.nextMove;
+        if (this.map[this.player.location].explored === true) {
           this.logHistory('You have entered ' + this.player.location + ', this cave has already been searched');
           return;
         }
-        if(nextMove !== 'entrance' && this.map[this.player.location].explored === false) {
+        if(this.player.location !== 'entrance' && this.map[this.player.location].explored === false) {
           randomEncounter = this.map[this.player.location].opts[getRandom(0, 4)];
+          $log.log('random Encounter', randomEncounter);
           this.logHistory('you have entered ' + this.player.location + ', you have found a ' + randomEncounter + ' in the cave.');
         }
 
         if(randomEncounter === 'monster') {
+          this.activeEncounter = true;
           let monsterIndex = getRandom(0, 3);
-          let monster = this.encounter.monster[monsterIndex];
+          this.currentEncounter = this.encounter.monster[monsterIndex];
 
         }
 
@@ -52,6 +56,7 @@ function GameController($log) {
           let chestIndex = getRandom(0, 3);
           let loot = this.encounter.chest[chestIndex];
           this.logHistory('you found ' + loot + 'in the chest');
+          this.player.options.push(loot);
           return;
         }
 
@@ -61,13 +66,24 @@ function GameController($log) {
           return;
         }
       }
-      this.player.health -= 5;
-      this.logHistory('you hit a wall and lost 5 health');
+
+      if(this.nextMove === 'deadend') {
+        this.player.health -= 5;
+        this.logHistory('you hit a wall and lost 5 health');
+      }
     }
   };
 
   this.logHistory = function() {
-    this.history.push({id: this.history.length, text:`${this.player.name}, {{info}}`});
+    this.history.push({id: this.history.length, text:`${this.player.name}, ${info}`});
+  };
+
+  this.attack = function(options) {
+    if (options === 'flee') {
+      this.player.location = this.map[this.player.location].back;
+      this.activeEncounter = false;
+      this.logHistory('you fled from ' + this.currentEncounter + ' and returned to ' + this.player.location);
+    }
   };
 }
 
